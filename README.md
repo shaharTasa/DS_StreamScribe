@@ -2,6 +2,50 @@
 
 Unlock insights, chat with your videos, and navigate with ease.
 
+### **Project Setup Using Poetry**
+
+#### **Prerequisites**
+
+- Python 3.7 or higher
+- Poetry (for dependency management)
+
+#### **Installation Steps**
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone <REMOTE_URL>
+   cd streamscribe
+   ```
+
+2. **Install Poetry**
+
+   ```bash
+   curl -sSL https://install.python-poetry.org | python3 -
+   ```
+
+3. **Install Dependencies**
+
+   ```bash
+   poetry install
+   ```
+
+4. **Activate the Virtual Environment**
+
+   ```bash
+   poetry shell
+   ```
+
+5. **Run the Application**
+
+   ```bash
+   poetry run streamlit run app.py
+   ```
+
+---
+
+
+
 
 # **Project Name: StreamScribe**
 
