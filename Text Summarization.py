@@ -1,7 +1,18 @@
 from transformers import pipeline
 import json
 import nltk
-
+import os
+import requests
+from langchain_groq import ChatGroq
+from langchain_core.prompts import (
+    PromptTemplate,
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    SystemMessagePromptTemplate
+)
+from pydantic import BaseModel, Field
+from deep_translator import GoogleTranslator
+import string
 
 data ={
     "segments": [
@@ -70,3 +81,38 @@ def summarize_text(text):
 text = "Your very long transcript goes here..."
 summary = summarize_text(text)
 print(summary)
+
+#chat bot
+GROQ_API_KEY = os.environ["GROQ_API_KEY"] = "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"
+
+class Search(BaseModel):
+    """Class for generating answer for user question"""
+    setup: str = Field(..., text=text)
+    question: str = Field (...)
+    answer: str = Field(..., description="answer")
+
+# Initialize the language model
+llm = ChatGroq(
+    model="llama3-groq-70b-8192-tool-use-preview",
+    api_key=GROQ_API_KEY
+)
+
+# Updated goods string with a focus on related products
+answer = (
+    "answer the question the user inputs about the text"
+)
+
+# Update prompt to better specify related goods
+prompt = ChatPromptTemplate(
+    [
+        SystemMessagePromptTemplate.from_template(
+            "You are an expert in the transcription extracted from the {text}. answer the question according to transcription ."
+        ),
+        HumanMessagePromptTemplate.from_template(
+            "Here is the transcription text:\n\n{text}\n\nBased on the transcription, please answer the following question:\n\n{question}"
+        )
+    ]
+)
+
+# Constructing the chain
+chain = prompt | llm.with_structured_output(Search)
